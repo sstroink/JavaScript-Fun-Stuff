@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scoped CSS Variables and JS</title>
+</head>
+<body>
+  <h2 class = hl>Update CSS Variables with JS </h2>
+
+  <div class="controls">
+    <label for="spacing">Radius:</label>
+     <!--Using data-sizing so that we can use the suffix of the value later on(padding cant be :10 has to be :10px-->
+    <input id="spacing" type="range" name="spacing" min="0" max="300" value="10" data-sizing="px">
+
+    <label for="blur">Blur:</label>
+    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+    <label for="base">Font Color:</label>
+    <input id="fontColor" type="color" name="fontColor" value="#ffc600">
+      
+    <label for="background color">Background Colour:</label>
+    <input id="bckColor" type="color" name="bckColor" value="#193549">
+  </div>
+
+  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+
+  <style>
+      /* Variables to be changed with the web controls using JS*/
+      :root {
+          --fontColor: #ffc600;
+          --spacing: 10px;
+          --blur: 10px;
+          --bckColor: #193549;
+      }
+      
+      img {
+          border-radius: var(--spacing);
+          filter: blur(var(--blur));
+      }
+      
+      .hl{
+          color: var(--fontColor);
+      }
+
+    body {
+      text-align: center;
+      background: var(--bckColor);
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+    input {
+      width:100px;
+    }
+  </style>
+
+  <script>
+      //Since querySelector returns a node list and NOT an array you don't get a ton of nice methods
+      //so use forEach to go through the list 
+      const inputs = document.querySelectorAll('.controls input');
+      
+      function handleUpdate(){
+          const suffix = this.dataset.sizing || ''; //now we can tack this on to the end so the CSS works prperly
+          document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+          
+      }
+      //for each node add an event handler for a change in the input value & call handleUpdate
+      inputs.forEach(inputs => inputs.addEventListener('change', handleUpdate));
+      
+      //for each node add an event handler for a change in the input value & call handleUpdate
+      inputs.forEach(inputs => inputs.addEventListener('mousemove', handleUpdate));
+  </script>
+
+</body>
+</html>
