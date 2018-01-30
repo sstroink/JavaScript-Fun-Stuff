@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<!--html5 specific tag canvas-->
+<h1 id="title">Click and drag to draw!</h1>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+    const canvas = document.querySelector('#draw');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.strokeStyle = '#BADA55';
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 50
+    /*
+    Fun things to turn on and off!!!!!
+    Check out: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation 
+    */
+    
+    //new lines go behind old lines 
+    //ctx.globalCompositeOperation = "destination-over";
+    
+    //Where both shapes overlap the color is determined by adding color values.
+    //ctx.globalCompositeOperation = "lighter";
+    
+    //The pixels are inverted, multiplied, and inverted again
+    //ctx.globalCompositeOperation = "screen";
+    
+    //ctx.globalCompositeOperation = "overlay";
+    
+    let isDrawing = false; //flag for mouse clicking and dragging
+    let lastX = 0;
+    let lastY = 0;
+    let hue = 0;
+    let direction = true;
+    
+    //click and drag functionality 
+    function draw(e){
+        if(!isDrawing) return; //stop function from running when they are not mouse down
+        console.log(e);
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; 
+        ctx.beginPath();
+        //start from
+        ctx.moveTo(lastX,lastY);
+        //go to 
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke(); 
+        
+        lastX = e.offsetX;
+        lastY = e.offsetY; 
+        hue++;
+        //reset hue so it stays in the range of hsla 0-360
+        if( hue >= 360){
+            hue = 0; 
+        }
+        
+        //change the line width
+        if(ctx.lineWidth >= 100 || ctx.lineWidth <=10){
+            direction = !direction;
+        }
+        
+        if(direction){
+             ctx.lineWidth++; 
+        }else{
+              ctx.lineWidth--;
+        }
+      
+        document.getElementById("title").style.color = `hsl(${hue}, 100%, 50%)`; //make h1 the same color
+ 
+    }
+    
+    //starts the drawing at the mouse location instead of always at 0,0
+    canvas.addEventListener('mousedown', (e) => {
+        isDrawing = true;
+        lastX = e.offsetX;
+        lastY = e.offsetY; 
+    });
+    
+    canvas.addEventListener('mousemove', draw); 
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mouseout', () => isDrawing = false); 
+    
+    
+    
+    
+</script>
+
+<style>
+  html, body {
+    margin:0;
+  }
+   h1{
+    text-align: center;
+    font-family: helvetica; 
+    font-weight: 100; 
+        
+    }
+</style>
+
+</body>
+</html>
