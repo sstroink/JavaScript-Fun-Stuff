@@ -6,6 +6,7 @@ const progressBar = player.querySelector(".progress__filled");
 const toggle = player.querySelector(".toggle");
 const skipButtons = player.querySelectorAll("[data-skip]");
 const ranges = player.querySelectorAll(".player__slider");
+const fullscreen = player.querySelector(".player__fullscreen"); 
 
 //build functions
 function togglePlay(){
@@ -44,11 +45,33 @@ function scrub(e){
     console.log(e); 
 }
 
+function playSpacebar(e) {
+    //spacebar keycode is 32
+    //togglePlay only if it is the space bar that has been pressed
+    if (e.keyCode == 32) {
+        togglePlay();
+    }
+}
+//button isnt changing when going fullscreen back to regular
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        player.webkitRequestFullscreen();
+        fullscreen.textContent = '↙';
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+            fullscreen.textContent = "⤢";
+        }
+    }
+}
+
 //hook up event listners
 video.addEventListener("click", togglePlay);
 video.addEventListener("play", updateButton);
 video.addEventListener("pause", updateButton);
 video.addEventListener("timeupdate", handleProgress);
+
+document.addEventListener("keypress", playSpacebar); //calls function when a key has been pressed
 
 toggle.addEventListener("click", togglePlay);
 
@@ -67,3 +90,5 @@ progress.addEventListener("mousemove" , (e) => mousedown && scrub(e));
 //listen for mouse up/down and change flag variable appropriately 
 progress.addEventListener("mousedown", () => mousedown = true);
 progress.addEventListener("mouseup" , () => mousedown = false);
+
+fullscreen.addEventListener("click", toggleFullscreen);
