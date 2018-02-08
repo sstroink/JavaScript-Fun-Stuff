@@ -4,5 +4,5 @@
 JS to change active class and use CSS transitions. </br>
 <a href="https://imgflip.com/gif/246cj0"><img src="https://i.imgflip.com/246cj0.gif" title="made at imgflip.com"/></a>                                                                                                          
                                                                                                                 
-                                                                                                                
+                                                                                                       
                                                                                                             
