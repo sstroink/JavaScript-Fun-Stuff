@@ -1,2 +1,2 @@
 # JavaScript-Fun-Stuff
-Based off of JavaScript30 tutorials
+Based off of <a href="https://javascript30.com/">JavaScript30 tutorials by Wes Bos </a>
