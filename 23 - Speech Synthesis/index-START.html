@@ -1,0 +1,93 @@
+<!--speech synthesis API that comes with most modern browsers-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Speech Synthesis</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="voiceinator">
+
+      <h1>The Voiceinator 5000</h1>
+
+        <!--      possible voices-->
+      <select name="voice" id="voices">
+        <option value="">Select A Voice</option>
+      </select>
+
+      <label for="rate">Rate:</label>
+      <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+
+      <label for="pitch">Pitch:</label>
+
+      <input name="pitch" type="range" min="0" max="2" step="0.1">
+<!--        where to enter the words to be spoken-->
+      <textarea name="text">Enter text here!</textarea>
+      <button id="stop">Stop!</button>
+      <button id="speak">Speak</button>
+
+    </div>
+
+<script>
+  //what is going to be said 
+    const msg = new SpeechSynthesisUtterance();
+    let voices = [];
+    const voicesDropdown = document.querySelector('[name="voice"]');
+    const options = document.querySelectorAll('[type="range"], [name="text"]');
+    const speakButton = document.querySelector('#speak');
+    const stopButton = document.querySelector('#stop');
+    
+    msg.text = document.querySelector('[name="text"]').value;
+    
+    function populateVoices() {
+        voices = this.getVoices();
+        //want to map over the voice options available
+        //varies from browser and OS etc.
+        //put them in the slection dropdown
+        //filter out to be only english ones
+        voicesDropdown.innerHTML = voices
+            .filter(voice => voice.lang.includes('en'))
+            .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`)
+            .join('');
+  }
+    
+    //Adds ability to choose the desired voice from the voice drop down 
+    function setVoice(){
+        //loops over the voice array and chooses one with name attribute equal to the option value selected
+        msg.voice = voices.find(voice => voice.name === this.value);
+        toggle();
+     
+    }
+    
+    //stop and restart the speech synth each time new voice is selected
+    function toggle(startOver = true){
+        speechSynthesis.cancel();
+        if(startOver){
+            speechSynthesis.speak(msg);
+        }
+    }
+    
+    //set the property to the value of the slider
+    function setOption(){
+        msg[this.name] = this.value;
+        toggle();
+    }
+    
+    speechSynthesis.addEventListener("voiceschanged", populateVoices);
+    voicesDropdown.addEventListener('change', setVoice);
+    
+    //gather all of the options and add event listener
+    options.forEach(option => option.addEventListener("change", setOption));
+    
+    //event listners for speak and stop buttons 
+    speakButton.addEventListener("click", toggle);
+    stopButton.addEventListener("click", () => toggle(false));
+    
+    
+</script>
+
+</body>
+</html>
