@@ -1,5 +1,5 @@
 <h1>Follow Along Nav </h1>
-<a href = "https://rawgit.com/sstroink/JavaScript-Fun-Stuff/master/26%20-%20Stripe%20Follow%20Along%20NAv/index.html">Check it out live </a>
+<a href = "https://rawgit.com/sstroink/JavaScript-Fun-Stuff/master/26%20-%20Stripe%20Follow%20Along%20Nav/index.html">Check it out live </a>
 </br>
 <ul>
   <li>HTML, CSS and JS</li>
